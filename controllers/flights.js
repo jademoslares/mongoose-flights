@@ -14,7 +14,9 @@ async function index(req, res) {
 
 async function show(req, res) {
   const flight = await Flights.findById(req.params.id);
-  res.render("flights/show", { title: "Flight Detail", flight });
+  let defaultDate = new Date(flight.departs);
+
+  res.render("flights/show", { title: "Flight Detail", flight, defaultDate});
 }
 
 function newFlight(req, res) {

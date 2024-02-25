@@ -30,6 +30,7 @@ const flightSchema = new Schema(
         return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
       },
     },
+    arrival: [destinationSchema],
   },
   {
     timestamps: true,
