@@ -10,32 +10,41 @@
   <div>Departs:</div>
   <div><%= flight.departs %></div>
   <div>Destinations:</div>
-  <ul>
+  <table>
+    <tr>
+      <th>Airport</th>
+      <th>Arrival</th>
+    </tr>
     <% for (let i = 0; i < flight.arrival.length; i++) { %>
-    <li>
-      <%= flight.arrival[i].airport %> <%= flight.arrival[i].arrival
-      %>
-    </li>
+    <tr>
+      <td><%= flight.arrival[i].airport %></td>
+      <td><%= flight.arrival[i].arrival %></td>
+    </tr>
     <% } %>
-  </ul>
+  </table>
+
+  <a href="/flights/<%= flight._id %>/tickets/new">Add Ticket</a>
+  <a href="/flights">Back</a>
 </section>
 
 <br /><br />
 <h2>Add Destinations</h2>
 <form
-  id="add-review-form"
+  id="add-destination-form"
   method="POST"
   action="/flights/<%= flight._id %>/destinations"
 >
   <label>Destination:</label>
   <select name="airport">
-    <option value="AUS">AUS</option>
-    <option value="DFW">DFW</option>
-    <option value="DEN">DEN</option>
-    <option value="LAX">LAX</option>
-    <option value="SAN" selected>SAN</option>
+    <% for (let i = 0; i < airportCodes.length; i++) { %>
+    <option value="<%= airportCodes[i] %>">
+      <%= airportCodes[i] %>
+    </option>
+    <% } %>
   </select>
+  <label>Arrival:</label>
   <input type="datetime-local" name="arrival" value="<%= defaultDate %>" />
   <input type="submit" value="Add Destination" />
 </form>
 <%- include('../partials/footer') %>
+

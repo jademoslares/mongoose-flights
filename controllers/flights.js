@@ -14,9 +14,17 @@ async function index(req, res) {
 
 async function show(req, res) {
   const flight = await Flights.findById(req.params.id);
-  let defaultDate = new Date(flight.departs);
+  const defaultDate = flight.departs.toISOString().slice(0, 16);
 
-  res.render("flights/show", { title: "Flight Detail", flight, defaultDate});
+  flight.arrival.sort((a, b) => {
+    if (a.arrivalTime > b.arrivalTime) return 1;
+    if (a.arrivalTime < b.arrivalTime) return -1;
+    return 0;
+  });
+
+  const airportCodes = Flights.schema.path("arrival").schema.path("airport").enumValues;
+
+  res.render("flights/show", { title: "Flight Detail", flight, defaultDate, airportCodes});
 }
 
 function newFlight(req, res) {
