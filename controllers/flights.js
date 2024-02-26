@@ -1,4 +1,5 @@
 const Flights = require("../models/flights");
+const Tickets = require("../models/tickets");
 
 module.exports = {
   index,
@@ -15,16 +16,16 @@ async function index(req, res) {
 async function show(req, res) {
   const flight = await Flights.findById(req.params.id);
   const defaultDate = flight.departs.toISOString().slice(0, 16);
+  const tickets = await Tickets.find({ flight: flight._id });
 
   flight.arrival.sort((a, b) => {
     if (a.arrivalTime > b.arrivalTime) return 1;
     if (a.arrivalTime < b.arrivalTime) return -1;
     return 0;
   });
-
   const airportCodes = Flights.schema.path("arrival").schema.path("airport").enumValues;
 
-  res.render("flights/show", { title: "Flight Detail", flight, defaultDate, airportCodes});
+  res.render("flights/show", { title: "Flight Detail", flight, defaultDate, airportCodes, tickets});
 }
 
 function newFlight(req, res) {
@@ -45,7 +46,7 @@ function newFlight(req, res) {
     departsDate,
     newFlight,
   });
-}
+} 
 
 async function create(req, res) {
   const flight = new Flights(req.body);

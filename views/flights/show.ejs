@@ -22,9 +22,28 @@
     </tr>
     <% } %>
   </table>
+  <div>Tickets:</div>
+  <table>
+    <tr>
+      <th>Seat</th>
+      <th>Price</th>
+      <th></th>
+    </tr>
+    <% for (let i = 0; i < tickets.length; i++) { %>
+    <tr>
+      <td><%= tickets[i].seat %></td>
+      <td><%= tickets[i].price %></td>
+      <td>
+        <form
+          action="/ticket/<%= tickets[i]._id %>?_method=DELETE" method="POST">
+          <button type="submit">X</button>
+        </form>
+      </td>
+    </tr>
+    <% } %>
+  </table>
 
   <a href="/flights/<%= flight._id %>/tickets/new">Add Ticket</a>
-  <a href="/flights">Back</a>
 </section>
 
 <br /><br />
